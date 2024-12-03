@@ -57,4 +57,13 @@ if __name__ == "__main__":
                 ON CONFLICT (prodid, depid) DO NOTHING;
                 """
             ],
-        
+            Transaction 3
+            [
+                "UPDATE Product SET prodid = 'pp1' WHERE prodid = 'p1';",
+                "UPDATE Stock SET prodid = 'pp1' WHERE prodid = 'p1';"
+            ],
+            # Transaction 4
+            [
+                "UPDATE Depot SET depid = 'dd1' WHERE depid = 'd1';",
+                "UPDATE Stock SET depid = 'dd1' WHERE depid = 'd1';"
+            ],
