@@ -67,3 +67,28 @@ if __name__ == "__main__":
                 "UPDATE Depot SET depid = 'dd1' WHERE depid = 'd1';",
                 "UPDATE Stock SET depid = 'dd1' WHERE depid = 'd1';"
             ],
+            # Transaction 1
+            [
+                """
+                DELETE FROM Stock 
+                WHERE prodid = 'pp1'
+                AND NOT (prodid = 'p2' AND depid = 'd2' AND quantity = 2000);
+                """,
+                "DELETE FROM Product WHERE prodid = 'pp1';"
+            ],
+            # Transaction 2
+            [
+                """
+                DELETE FROM Stock 
+                WHERE depid = 'dd1'
+                AND NOT (prodid = 'p2' AND depid = 'd2' AND quantity = 2000);
+                """,
+                "DELETE FROM Depot WHERE depid = 'dd1';"
+            ]
+        ]
+    for index, statements in enumerate(transaction_list, start=1):
+        print(f"Executing Transaction {index}:")
+        process_transaction(conn, statements)
+
+    conn.close()
+    print("Database connection closed.")
